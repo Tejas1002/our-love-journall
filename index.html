@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Journal 🤍</title>
+    <!-- Light, Airy, Romantic Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Quicksand:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="locked">
+    <!-- Ambient Audio -->
+    <audio id="bg-music" loop preload="auto">
+        <!-- Relaxing Romantic Piano Music -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-piano-reflections-1014.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Welcome Intro Screen -->
+    <div id="intro-screen">
+        <div class="intro-content">
+            <h1 class="script-title doodle-pop">Our Love Journal</h1>
+            <p class="subtitle">A little interactive scrapbook made just for you.</p>
+            <button id="start-btn" class="cute-btn primary pulse">Open The Journal 📖</button>
+        </div>
+        <!-- Decorative doodles -->
+        <span class="doodle float" style="top: 10%; left: 15%;">✨</span>
+        <span class="doodle float" style="top: 20%; right: 20%; font-size: 2rem;">🤍</span>
+        <span class="doodle float" style="bottom: 15%; left: 25%;">🌸</span>
+    </div>
+    <!-- Floating UI -->
+    <div class="floating-controls hidden" id="float-ui">
+        <button id="audio-btn" class="cute-btn icon-only">🎵</button>
+    </div>
+    <!-- Main Content: Scrapbook Pages -->
+    <main id="journal-content" class="hidden">
+        <!-- Page 1: Hero & Intro -->
+        <section class="page hero-page">
+            <div class="scrapbook-item sticky-note right-tilt">
+                <div class="pin"></div>
+                <p class="handwriting">I made this just for you... 🥺</p>
+            </div>
+            <div class="hero-text-container">
+                <h1 class="main-heading">To My One & Only</h1>
+                <p class="body-text">Every love story is beautiful, but ours is my absolute favorite. Welcome to your
+                    personalized journal. Take your time, explore, and feel my heart.</p>
+            </div>
+            <div class="scroll-down">
+                <span class="handwriting">Scroll down, cutie ↓</span>
+            </div>
+        </section>
+        <!-- Page 2: Surpise 1 - Wax Seal Envelope -->
+        <section class="page envelope-page">
+            <div class="scrapbook-item notebook-paper left-tilt">
+                <div class="tape"></div>
+                <h2 class="section-title">A Letter For You</h2>
+                <p class="instruction">Tap the wax seal to break it open.</p>
+                <div class="envelope-wrapper" id="envelope-wrapper">
+                    <div class="envelope-back"></div>
+                    <div class="letter" id="the-letter">
+                        <p class="handwriting">My dearest,<br>You are the reason I smile every single day. Finding you
+                            was the greatest surprise of my life, and keeping you is my greatest blessing. ❤️</p>
+                    </div>
+                    <div class="envelope-front"></div>
+                    <div class="envelope-flap" id="envelope-flap"></div>
+                    <div class="wax-seal" id="wax-seal">
+                        <span>💌</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Page 3: Surprise 2 - Developing Memories & Photo Gallery -->
+        <section class="page polaroid-page" style="min-height: auto; padding: 10vh 5vw 5vh;">
+            <h2 class="section-title text-center">Developing Memories</h2>
+            <p class="instruction text-center">Gently rub the dark film to "develop" the photo, then explore our
+                gallery!</p>
+
+            <div class="scrapbook-item polaroid right-tilt" style="margin-bottom: 80px;">
+                <div class="tape top-corner"></div>
+                <div class="photo-area">
+                    <img src="photo\1.jpg"
+                        alt="Us" class="polaroid-img">
+                    <!-- The canvas covers the image initially -->
+                    <canvas id="polaroid-canvas"></canvas>
+                </div>
+                <div class="polaroid-caption">
+                    <p class="handwriting hidden-fade" id="photo-caption">Thinking of this day makes my heart flutter. ✨
+                    </p>
+                </div>
+            </div>
+
+            <!-- Big Photo & Video Gallery -->
+            <div class="scrapbook-item notebook-paper left-tilt" style="max-width: 900px; width: 100%;">
+                <div class="tape tape-top"></div>
+                <h2 class="section-title text-center" style="font-size: 2.2rem;">Our Biggest Moments</h2>
+                <div class="gallery-grid big-gallery">
+                    <div class="polaroid-frame big-frame right-tilt">
+                        <img src="photo\7.mp4"
+                            alt="Memory 1">
+                    </div>
+                    <div class="polaroid-frame big-frame left-tilt">
+                        <!-- Adding a video as requested -->
+                        <video autoplay loop muted playsinline class="gallery-video">
+                            <!-- Placeholder for a romantic video memory -->
+                            <source src="photo\2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="polaroid-frame big-frame left-tilt">
+                        <img src="photo\6.jpeg"
+                            alt="Memory 2">
+                    </div>
+                    <div class="polaroid-frame big-frame right-tilt">
+                        <img src="photo\4.jpg"
+                            alt="Memory 3">
+                    </div>
+                    <div class="polaroid-frame big-frame left-tilt" style="grid-column: span 2;">
+                        <img src="photo\5.jpg"
+                            alt="Memory 4" style="height: 350px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Page 4: Surprise 3 - The Love Quiz -->
+        <section class="page quiz-page">
+            <div class="scrapbook-item kraft-paper left-tilt">
+                <div class="tape tape-bottom"></div>
+                <div class="tape tape-top"></div>
+                <h2 class="section-title">A Little Quiz...</h2>
+                <p class="instruction">Answer correctly to continue. I know you know this! 😉</p>
+                <div class="quiz-box" id="quiz-1">
+                    <p class="quiz-q handwriting">What is my absolute favorite place in the entire world?</p>
+                    <div class="quiz-options">
+                        <button class="quiz-btn wrong">A fancy date night</button>
+                        <button class="quiz-btn wrong">A beautiful beach</button>
+                        <button class="quiz-btn correct">Right next to you</button>
+                    </div>
+                </div>
+                <div class="quiz-box hidden" id="quiz-2">
+                    <p class="quiz-q handwriting">What was I thinking the first time I saw you?</p>
+                    <div class="quiz-options">
+                        <button class="quiz-btn wrong">Wow, they're cute</button>
+                        <button class="quiz-btn correct">Wow, that's the one 😍</button>
+                        <button class="quiz-btn wrong">Nice outfit</button>
+                    </div>
+                </div>
+                <div class="quiz-success hidden" id="quiz-success">
+                    <p class="handwriting giant-text text-center">You know me perfectly! 💕</p>
+                </div>
+            </div>
+        </section>
+        <!-- Page 5: Surprise 4 - Memory Match Game -->
+        <section class="page game-page">
+            <div class="scrapbook-item kraft-paper left-tilt">
+                <div class="pin"></div>
+                <h2 class="section-title text-center">A Little Fun Game 💖</h2>
+                <p class="instruction text-center">Match all the love symbols to unlock the finale.</p>
+                <div class="memory-grid" id="memory-grid">
+                    <!-- Cards injected by JS -->
+                </div>
+                <div class="text-center" style="margin-top: 20px;">
+                    <p id="game-success-msg" class="handwriting hidden" style="color: var(--accent-pink);">You did it!
+                        Now scroll down for the last surprise... ✨</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Surprise 5 - Heartbeat Lock (Final Proposal) -->
+        <section class="page heartbeat-page">
+            <h2 class="section-title text-center">The Final Chapter</h2>
+            <p class="instruction text-center">Press and hold the heart to sync our heartbeats & unlock my secret.</p>
+            <div class="heart-lock-container" id="heart-lock">
+                <div class="empty-heart">🤍</div>
+                <div class="filled-heart" id="filled-heart">❤️</div>
+                <div class="hold-text handwriting">Hold...</div>
+            </div>
+            <div class="proposal-content hidden" id="proposal-content">
+                <h1 class="main-heading text-center">Will you be mine forever?</h1>
+                <p class="handwriting text-center" style="font-size: 2rem; margin-bottom: 40px; color: #555;">I promise
+                    to fill the rest of this journal with a lifetime of beautiful memories.</p>
+                <div class="decision-buttons" style="position: relative;">
+                    <button class="cute-btn primary giant pulse" id="btn-yes">Yes, a million times! 💍</button>
+                    <button class="cute-btn secondary giant" id="btn-no" style="position: absolute; left: 60%;">No way
+                        😜</button>
+                </div>
+            </div>
+            <!-- Beautiful Corner Florals for light theme -->
+            <div class="corner-flower bottom-left">🌸</div>
+            <div class="corner-flower top-right">🌿</div>
+        </section>
+    </main>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
