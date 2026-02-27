@@ -17,8 +17,10 @@
 <body class="locked">
     <!-- Ambient Audio -->
     <audio id="bg-music" loop preload="auto">
-        <!-- Relaxing Romantic Piano Music -->
-        <source src="https://assets.mixkit.co/music/preview/mixkit-piano-reflections-1014.mp3" type="audio/mpeg">
+        <!-- Relaxing Romantic Piano Music (Chopin - Nocturne Op 9 No 2) -->
+        <source
+            src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Chopin_-_Nocturne_Op_9_No_2_%28E_Flat_Major%29.ogg"
+            type="audio/ogg">
     </audio>
 
     <!-- Login Screen -->
@@ -137,7 +139,34 @@
                 </div>
             </div>
         </section>
-        <!-- Page 4: Surprise 3 - The Love Quiz -->
+
+        <!-- Page 4: Surprise 3 - The Love Jar (NEW FUNCTIONALITY) -->
+        <section class="page jar-page">
+            <h2 class="section-title text-center">Reasons Why I Love You</h2>
+            <p class="instruction text-center">Tap the magic jar to pull out a little reminder...</p>
+
+            <div class="jar-wrapper"
+                style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 40px; width: 100%;">
+
+                <div class="jar-container pulse" id="love-jar">
+                    <div class="jar-lid"></div>
+                    <div class="jar-neck"></div>
+                    <div class="jar-body">
+                        <span class="jar-label handwriting">Love Notes 💌</span>
+                        <div class="hearts-in-jar">❤️ 💖 ✨ 💕</div>
+                    </div>
+                </div>
+
+                <div class="pulled-note hidden-fade scrapbook-item sticky-note right-tilt" id="pulled-note"
+                    style="margin-bottom: 0; max-width: 400px; padding-top: 50px;">
+                    <div class="pin"></div>
+                    <p class="handwriting" id="note-text" style="font-size: 1.8rem; text-align: center; margin:0;"></p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Page 5: Surprise 4 - The Love Quiz -->
         <section class="page quiz-page">
             <div class="scrapbook-item kraft-paper left-tilt">
                 <div class="tape tape-bottom"></div>
@@ -181,24 +210,104 @@
             </div>
         </section>
 
-        <!-- Page 6: Surprise 5 - Heartbeat Lock (Final Proposal) -->
-        <section class="page heartbeat-page">
-            <h2 class="section-title text-center">The Final Chapter</h2>
-            <p class="instruction text-center">Press and hold the heart to sync our heartbeats & unlock my secret.</p>
-            <div class="heart-lock-container" id="heart-lock">
-                <div class="empty-heart">🤍</div>
-                <div class="filled-heart" id="filled-heart">❤️</div>
-                <div class="hold-text handwriting">Hold...</div>
-            </div>
-            <div class="proposal-content hidden" id="proposal-content">
-                <h1 class="main-heading text-center">Will you be mine forever?</h1>
-                <p class="handwriting text-center" style="font-size: 2rem; margin-bottom: 40px; color: #555;">I promise
-                    to fill the rest of this journal with a lifetime of beautiful memories.</p>
-                <div class="decision-buttons" style="position: relative;">
-                    <button class="cute-btn primary giant pulse" id="btn-yes">Yes, a million times! 💍</button>
-                    <button class="cute-btn secondary giant" id="btn-no" style="position: absolute; left: 60%;">No way
-                        😜</button>
+        <!-- New Feature: Love Coupons -->
+        <section class="page coupons-page">
+            <h2 class="section-title text-center">Love Coupons 🎟️</h2>
+            <p class="instruction text-center">Use them wisely... or all at once! Tap to redeem.</p>
+
+            <div class="coupons-container"
+                style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 800px; margin-top: 30px;">
+                <div class="coupon pulse">
+                    <h3>Free Massage</h3>
+                    <p>Good for one 30-minute back massage by Yours Truly.</p>
                 </div>
+                <div class="coupon pulse">
+                    <h3>Win An Argument</h3>
+                    <p>Play this card to instantly be right (even if you're wrong!).</p>
+                </div>
+                <div class="coupon pulse">
+                    <h3>Snack Run</h3>
+                    <p>I drop everything and get your favorite midnight snacks.</p>
+                </div>
+                <div class="coupon pulse">
+                    <h3>Movie Pick</h3>
+                    <p>You choose the movie tonight, absolutely no complaints from me!</p>
+                </div>
+                <div class="coupon pulse">
+                    <h3>Bear Hugs</h3>
+                    <p>Redeemable for unlimited bear hugs whenever you need them.</p>
+                </div>
+                <div class="coupon pulse">
+                    <h3>Date Night</h3>
+                    <p>I plan an entire surprise date night just for us.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Surprise 5 - Date Night Wheel -->
+        <section class="page spinner-page">
+            <h2 class="section-title text-center">What's Our Next Date?</h2>
+            <p class="instruction text-center">Spin the wheel and let fate decide our next adventure... 🎡</p>
+            <div class="scrapbook-item sticky-note right-tilt"
+                style="width: 350px; padding: 30px; margin-top: 30px; display: flex; flex-direction: column; align-items: center;">
+                <div class="tape tape-top"></div>
+                <div class="wheel-container">
+                    <div class="wheel-pointer">🔻</div>
+                    <div class="wheel" id="date-wheel">
+                        <div class="wheel-slice" style="--i: 0;"><span>Movie Night 🍿</span></div>
+                        <div class="wheel-slice" style="--i: 1;"><span>Stargazing ✨</span></div>
+                        <div class="wheel-slice" style="--i: 2;"><span>Cook Dinner 🍳</span></div>
+                        <div class="wheel-slice" style="--i: 3;"><span>Cuddles 🥰</span></div>
+                        <div class="wheel-slice" style="--i: 4;"><span>Surprise 🎁</span></div>
+                        <div class="wheel-slice" style="--i: 5;"><span>Game Night 🎮</span></div>
+                    </div>
+                </div>
+                <button class="cute-btn primary pulse" id="spin-btn" style="margin-top: 30px;">Spin It! 🎡</button>
+                <div id="spin-result" class="hidden handwriting"
+                    style="margin-top: 20px; font-size: 2rem; color: #A02B2B; text-align: center;"></div>
+            </div>
+        </section>
+
+        <!-- Page 7: Surprise 6 - The Ring Proposal (Drag Interaction) -->
+        <section class="page proposal-page">
+            <h2 class="section-title text-center" style="font-size: 3.5rem;">Will you be mine forever? 💍</h2>
+            <p class="instruction text-center" id="drag-instruction" style="font-size: 1.4rem; color: #555;">Drag the
+                ring onto my finger to say YES. 🥺</p>
+
+            <div class="proposal-3d-scene text-center" style="margin-top: 20px; margin-bottom: 20px;">
+                <img src="3d_proposal.png" alt="Romantic 3D Proposal"
+                    style="max-height: 200px; border-radius: 20px; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(255,196,196,0.4); animation: softPulse 4s infinite ease-in-out;">
+            </div>
+
+            <div class="proposal-interactive-zone" id="proposal-zone">
+                <!-- Dropzone: The Finger -->
+                <div class="finger-wrapper">
+                    <div class="css-finger">
+                        <div class="css-nail"></div>
+                        <div class="css-joint"></div>
+                        <div class="css-joint" style="top: 110px;"></div>
+                        <!-- Drop target -->
+                        <div class="ring-dropzone" id="ring-dropzone"></div>
+                    </div>
+                </div>
+
+                <!-- Draggable Item: Flower and Ring -->
+                <div class="flower-bed">
+                    <div class="rose">🌺</div>
+                    <div class="the-ring pulse" id="draggable-ring"><span>💍</span></div>
+                </div>
+            </div>
+
+            <div class="proposal-content hidden" id="proposal-content" style="margin-top: 0px;">
+                <div class="main-heading text-center doodle-pop"
+                    style="font-size: 4rem; animation-delay: 0.2s; color: var(--accent-pink);">
+                    You said YES! 💕
+                </div>
+
+                <p id="proposal-subtext" class="handwriting text-center hidden-fade"
+                    style="font-size: 2.5rem; margin-top: 20px; color: #555;">
+                    I promise to fill the rest of this journal with a lifetime of beautiful memories...
+                </p>
             </div>
             <!-- Beautiful Corner Florals for light theme -->
             <div class="corner-flower bottom-left">🌸</div>
