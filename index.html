@@ -20,6 +20,24 @@
         <!-- Relaxing Romantic Piano Music -->
         <source src="https://assets.mixkit.co/music/preview/mixkit-piano-reflections-1014.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-content scrapbook-item right-tilt">
+            <h1 class="main-heading" style="font-size: 3rem;">Secret Entry 💌</h1>
+            <p class="instruction" style="margin-bottom: 30px;">Enter the magic words to unlock my heart...</p>
+            <div class="password-container">
+                <input type="password" id="secret-password" placeholder="Passcode (e.g. i love you)" class="cute-input">
+                <button id="login-btn" class="cute-btn primary pulse">Unlock 🔒</button>
+            </div>
+            <p id="login-error" class="hidden handwriting" style="color: #A02B2B; margin-top: 15px; font-size: 1.5rem;">
+                Oops, try again cutie! 🙈</p>
+        </div>
+        <!-- Decorative doodles -->
+        <span class="doodle float" style="top: 15%; left: 20%;">💭</span>
+        <span class="doodle float" style="bottom: 20%; right: 15%;">🔑</span>
+    </div>
+
     <!-- Welcome Intro Screen -->
     <div id="intro-screen">
         <div class="intro-content">
@@ -82,8 +100,7 @@
             <div class="scrapbook-item polaroid right-tilt" style="margin-bottom: 80px;">
                 <div class="tape top-corner"></div>
                 <div class="photo-area">
-                    <img src=""
-                        alt="Us" class="polaroid-img">
+                    <img src="" alt="Us" class="polaroid-img">
                     <!-- The canvas covers the image initially -->
                     <canvas id="polaroid-canvas"></canvas>
                 </div>
@@ -99,8 +116,7 @@
                 <h2 class="section-title text-center" style="font-size: 2.2rem;">Our Biggest Moments</h2>
                 <div class="gallery-grid big-gallery">
                     <div class="polaroid-frame big-frame right-tilt">
-                        <img src=""
-                            alt="Memory 1">
+                        <img src="" alt="Memory 1">
                     </div>
                     <div class="polaroid-frame big-frame left-tilt">
                         <!-- Adding a video as requested -->
@@ -110,16 +126,13 @@
                         </video>
                     </div>
                     <div class="polaroid-frame big-frame left-tilt">
-                        <img src=""
-                            alt="Memory 2">
+                        <img src="" alt="Memory 2">
                     </div>
                     <div class="polaroid-frame big-frame right-tilt">
-                        <img src=""
-                            alt="Memory 3">
+                        <img src="" alt="Memory 3">
                     </div>
                     <div class="polaroid-frame big-frame left-tilt" style="grid-column: span 2;">
-                        <img src=""
-                            alt="Memory 4" style="height: 350px;">
+                        <img src="" alt="Memory 4" style="height: 350px;">
                     </div>
                 </div>
             </div>
@@ -198,4 +211,3 @@
 </body>
 
 </html>
-
