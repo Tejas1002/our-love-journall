@@ -160,6 +160,58 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('mouseup', () => isDrawing = false);
         window.addEventListener('touchend', () => isDrawing = false);
     }
+
+    // --- 3.5 The Love Jar (NEW FUNCTIONALITY) ---
+    const loveJar = document.getElementById('love-jar');
+    const pulledNote = document.getElementById('pulled-note');
+    const noteText = document.getElementById('note-text');
+
+    const loveReasons = [
+        "Your smile lights up my entire world. ✨",
+        "You always know exactly how to make me laugh.",
+        "The way your eyes sparkle when you talk about things you love.",
+        "Your hugs feel like home. 🏡",
+        "You are my biggest supporter and my best friend.",
+        "I love the way you wrinkle your nose when you're thinking. 🥺",
+        "Even doing absolutely nothing is fun when I'm with you.",
+        "You have the kindest heart of anyone I know. 💖",
+        "I just love everything about you, forever.",
+        "You make me a better person every single day."
+    ];
+
+    if (loveJar) {
+        loveJar.addEventListener('click', () => {
+            // Popping animation on click
+            loveJar.classList.remove('pulse');
+            loveJar.style.transform = 'scale(0.9) rotate(-3deg)';
+            setTimeout(() => { loveJar.style.transform = ''; }, 150);
+
+            // Pop some confetti out of the jar opening
+            const rect = loveJar.getBoundingClientRect();
+            const x = (rect.left + rect.width / 2) / window.innerWidth;
+            const y = (rect.top) / window.innerHeight;
+
+            confetti({
+                particleCount: 25,
+                spread: 50,
+                origin: { x, y: y },
+                colors: ['#FFC4C4', '#ffffff', '#FF9B9B'],
+                startVelocity: 15,
+                gravity: 0.8
+            });
+
+            // Hide the old note if any
+            pulledNote.classList.remove('show');
+
+            // Show new one after a tiny delay
+            setTimeout(() => {
+                const randomReason = loveReasons[Math.floor(Math.random() * loveReasons.length)];
+                noteText.innerText = randomReason;
+                pulledNote.classList.add('show');
+            }, 300);
+        });
+    }
+
     // --- 4. The Love Quiz Logic ---
     const quizBoxes = document.querySelectorAll('.quiz-box');
     const quizSuccess = document.getElementById('quiz-success');
@@ -238,108 +290,165 @@ document.addEventListener('DOMContentLoaded', () => {
         flippedCards = [];
     }
 
-    // --- 6. Heartbeat Sync Logic (Hold to Fill) ---
-    const heartLock = document.getElementById('heart-lock');
-    const filledHeart = document.getElementById('filled-heart');
+    // --- 5.5 Date Night Wheel ---
+    const spinBtn = document.getElementById('spin-btn');
+    const dateWheel = document.getElementById('date-wheel');
+    const spinResult = document.getElementById('spin-result');
+    let isSpinning = false;
+
+    // The options on the wheel
+    const dateOptions = [
+        "Movie Night 🍿",
+        "Stargazing ✨",
+        "Cook Dinner 🍳",
+        "Cuddles 🥰",
+        "Surprise 🎁",
+        "Game Night 🎮"
+    ];
+
+    if (spinBtn && dateWheel) {
+        spinBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinResult.classList.add('hidden');
+
+            // Randomly select one of the 6 options (0 to 5)
+            const selectedIdx = Math.floor(Math.random() * 6);
+
+            // Calculate degrees. Each slice is 60 degrees.
+            // We want the selected slice to be at the TOP (pointer is at the top).
+            // Initially, slice 0 is at bottom-right.
+            // Adjusting rotation so selectedIdx lands perfectly under the pointer:
+            // This math might need slight tweaking, but basically spin full 5 times (1800deg)
+            // Plus offset for the specific slice. 
+            // Since Slice 0 centers at ~330 deg to be at the top, we rotate by +30 deg:
+            const sliceDegree = 60;
+            const extraSpins = 360 * 5;
+            const offset = - (selectedIdx * sliceDegree) + 30; // Perfect alignment!
+
+            const totalDegree = extraSpins + offset;
+
+            dateWheel.style.transform = `rotate(${totalDegree}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                spinResult.innerHTML = `Let's go for:<br><span style="color: var(--accent-pink); font-size: 2.5rem">${dateOptions[selectedIdx]}</span>`;
+                spinResult.classList.remove('hidden');
+
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.6 },
+                    colors: ['#FFC4C4', '#DCEbd2', '#ffffff']
+                });
+            }, 4000); // Matches the 4s CSS transition
+        });
+    }
+
+    // --- 5.8 Love Coupons Logic ---
+    const coupons = document.querySelectorAll('.coupon');
+    coupons.forEach(coupon => {
+        coupon.addEventListener('click', () => {
+            if (!coupon.classList.contains('redeemed')) {
+                coupon.classList.add('redeemed');
+                coupon.classList.remove('pulse');
+
+                // Small confetti pop
+                const rect = coupon.getBoundingClientRect();
+                const x = (rect.left + rect.width / 2) / window.innerWidth;
+                const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+                confetti({
+                    particleCount: 30,
+                    spread: 40,
+                    origin: { x, y },
+                    colors: ['#A02B2B', '#FFC4C4']
+                });
+            }
+        });
+    });
+
+    // --- 7. Interactive Ring Drag Proposal ---
+    const theRing = document.getElementById('draggable-ring');
+    const ringDropzone = document.getElementById('ring-dropzone');
+    const proposalZone = document.getElementById('proposal-zone');
+    const dragInstruction = document.getElementById('drag-instruction');
     const proposalContent = document.getElementById('proposal-content');
-    let fillAmount = 100; // inverted for polygon % (100 = empty, 0 = full)
-    let fillInterval;
-    let isHolding = false;
-    let unlocked = false;
-    // Apply init state
-    filledHeart.style.clipPath = `polygon(0 100%, 100% 100%, 100% 100%, 0 100%)`;
-    function startFilling() {
-        if (unlocked) return;
-        isHolding = true;
-        clearInterval(fillInterval);
-        fillInterval = setInterval(() => {
-            fillAmount -= 2; // Speed of fill
-            if (fillAmount <= 0) {
-                fillAmount = 0;
-                unlockHeart();
-            }
-            updateHeartClip();
-        }, 30);
-    }
-    function stopFilling() {
-        if (unlocked) return;
-        isHolding = false;
-        clearInterval(fillInterval);
-        // Slowly drain if they let go early
-        fillInterval = setInterval(() => {
-            fillAmount += 5;
-            if (fillAmount >= 100) {
-                fillAmount = 100;
-                clearInterval(fillInterval);
-            }
-            updateHeartClip();
-        }, 30);
-    }
-    function updateHeartClip() {
-        // creates a horizontal cut-off moving upwards
-        filledHeart.style.clipPath = `polygon(0 ${fillAmount}%, 100% ${fillAmount}%, 100% 100%, 0 100%)`;
-    }
-    function unlockHeart() {
-        unlocked = true;
-        clearInterval(fillInterval);
-        heartLock.querySelector('.hold-text').classList.add('hidden');
+
+    // The Cinematic Finale Logic
+    function unlockProposal() {
         proposalContent.classList.remove('hidden');
+
         // Massive cute confetti explosion
         confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, colors: ['#FFC4C4', '#FF9B9B', '#ffffff'] });
+
+        // Fade in subtext and run the literal finale
+        const proposalSubtext = document.getElementById('proposal-subtext');
+
+        setTimeout(() => {
+            proposalSubtext.classList.add('show');
+            executeFinale();
+        }, 1500);
     }
-    heartLock.addEventListener('mousedown', startFilling);
-    heartLock.addEventListener('touchstart', (e) => { e.preventDefault(); startFilling(); });
-    window.addEventListener('mouseup', stopFilling);
-    window.addEventListener('touchend', stopFilling);
-    // --- Final Buttons (Interactive Proposal) ---
-    const btnYes = document.getElementById('btn-yes');
-    const btnNo = document.getElementById('btn-no');
 
     function executeFinale() {
-        btnYes.closest('.decision-buttons').innerHTML = `
-            <div style="font-family: var(--font-script); font-size: 4rem; color: var(--accent-pink);">
-                I love you so much. 💕
-            </div>
-        `;
+        // Continuous confetti celebration
         const duration = 5 * 1000;
         const animationEnd = Date.now() + duration;
-        const colors = ['#FFC4C4', '#DCEbd2', '#ffffff', '#FF9B9B', '#ffd700'];
+
+        // Function to create DOM butterflies
+        function createButterfly() {
+            const butterfly = document.createElement('div');
+            butterfly.classList.add('butterfly');
+            butterfly.innerText = '🦋';
+
+            // Randomize starting X position a bit, left or right
+            const startX = Math.random() < 0.5 ? (Math.random() * 20 - 10) + '%' : (Math.random() * 20 + 90) + '%';
+            butterfly.style.left = startX;
+
+            // Randomize animation duration and delay slightly
+            const animDuration = 3 + Math.random() * 2;
+            butterfly.style.animationDuration = `${animDuration}s`;
+
+            // Randomize size
+            const startScale = 0.5 + Math.random() * 1.5;
+            butterfly.style.transform = `scale(${startScale})`;
+
+            document.body.appendChild(butterfly);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                butterfly.remove();
+            }, animDuration * 1000);
+        }
+
+        // Spawn a batch of butterflies initially
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createButterfly, Math.random() * 2000);
+        }
 
         (function frame() {
-            // Flower Blast Confetti (using actual emoji for a literal "flower blast")
+            // Standard Confetti while butterflies fly
             confetti({
-                particleCount: 15, // lots of flowers per frame
+                particleCount: 15,
                 angle: 60,
                 spread: 70,
                 origin: { x: 0, y: 0.8 },
-                colors: colors,
-                zIndex: 1000,
-                shapes: ['circle'],
-                scalar: 1.5, // Make them a bit larger
-                ticks: 300 // Last longer on screen
+                colors: ['#FFC4C4', '#DCEbd2', '#ffffff', '#FF9B9B', '#ffd700'],
+                zIndex: 1000
             });
             confetti({
                 particleCount: 15,
                 angle: 120,
                 spread: 70,
                 origin: { x: 1, y: 0.8 },
-                colors: colors,
-                zIndex: 1000,
-                shapes: ['circle'],
-                scalar: 1.5,
-                ticks: 300
+                colors: ['#FFC4C4', '#DCEbd2', '#ffffff', '#FF9B9B', '#ffd700'],
+                zIndex: 1000
             });
-            // We can even add an intermittent burst of specific shapes or extra large pieces
-            if (Date.now() % 3 === 0) {
-                confetti({
-                    particleCount: 10,
-                    angle: 90,
-                    spread: 120,
-                    origin: { x: 0.5, y: 1 },
-                    colors: ['#FFC4C4', '#FF9B9B', '#ffd700'],
-                    zIndex: 1000,
-                    shapes: ['star'] // star shapes sort of look like pointy flowers!
-                });
+
+            // Continuously spawn more butterflies during the 5 second loop
+            if (Math.random() > 0.7) {
+                createButterfly();
             }
 
             if (Date.now() < animationEnd) {
@@ -348,27 +457,123 @@ document.addEventListener('DOMContentLoaded', () => {
         }());
     }
 
-    if (btnYes) btnYes.addEventListener('click', executeFinale);
+    if (theRing && ringDropzone) {
+        let isDragging = false;
+        let startX, startY;
+        let initialLeft = 0;
+        let initialTop = 0;
 
-    // The "No" button runs away
-    if (btnNo) {
-        btnNo.addEventListener('mouseover', function () {
-            const container = btnNo.closest('.decision-buttons');
-            const rect = container.getBoundingClientRect();
+        function onDragStart(e) {
+            isDragging = true;
+            theRing.style.transition = 'none'; // remove pulse/snap transition during drag
+            theRing.classList.remove('pulse');
 
-            // Generate random positions within the container
-            const newX = Math.random() * (rect.width - 150); // 150 is approx button width
-            const newY = (Math.random() - 0.5) * 100; // Move up or down slightly
+            if (e.type === 'touchstart') {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            } else {
+                startX = e.clientX;
+                startY = e.clientY;
+            }
 
-            btnNo.style.transition = 'all 0.2s ease';
-            btnNo.style.left = `${newX}px`;
-            btnNo.style.transform = `translateY(${newY}px)`;
-        });
+            // Get current transform
+            const style = window.getComputedStyle(theRing);
+            const matrix = new DOMMatrixReadOnly(style.transform);
+            initialLeft = matrix.m41;
+            initialTop = matrix.m42;
+        }
 
-        btnNo.addEventListener('click', () => {
-            // Just in case they somehow press it
-            btnNo.innerText = "Nice try 😜";
-        });
+        function onDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault(); // prevent scrolling while dragging ring
+
+            let clientX, clientY;
+            if (e.type === 'touchmove') {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
+            theRing.style.transform = `translate(${initialLeft + dx}px, ${initialTop + dy}px)`;
+
+            // Check collision with dropzone
+            const ringRect = theRing.getBoundingClientRect();
+            const dropRect = ringDropzone.getBoundingClientRect();
+
+            if (
+                ringRect.left < dropRect.right &&
+                ringRect.right > dropRect.left &&
+                ringRect.top < dropRect.bottom &&
+                ringRect.bottom > dropRect.top
+            ) {
+                ringDropzone.classList.add('highlight');
+            } else {
+                ringDropzone.classList.remove('highlight');
+            }
+        }
+
+        function onDragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const ringRect = theRing.getBoundingClientRect();
+            const dropRect = ringDropzone.getBoundingClientRect();
+
+            if (
+                ringRect.left < dropRect.right &&
+                ringRect.right > dropRect.left &&
+                ringRect.top < dropRect.bottom &&
+                ringRect.bottom > dropRect.top
+            ) {
+                // Success! Snap to finger perfectly
+                ringDropzone.classList.remove('highlight');
+                theRing.classList.add('snapped');
+                theRing.classList.add('ring-accepted');
+
+                // Snap visually
+                const dx = dropRect.left - ringRect.left + (dropRect.width - ringRect.width) / 2;
+                const dy = dropRect.top - ringRect.top + (dropRect.height - ringRect.height) / 2;
+
+                const style = window.getComputedStyle(theRing);
+                const matrix = new DOMMatrixReadOnly(style.transform);
+                theRing.style.transform = `translate(${matrix.m41 + dx}px, ${matrix.m42 + dy}px)`;
+
+                // Small victory pop
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ['#ffd700', '#ffffff', '#FF9B9B'] });
+
+                // Trigger cinematic proposal unlock after the bounce animation finishes
+                setTimeout(() => {
+                    proposalZone.style.opacity = '0';
+                    dragInstruction.style.opacity = '0';
+                    setTimeout(() => {
+                        proposalZone.style.display = 'none';
+                        dragInstruction.style.display = 'none';
+                        unlockProposal();
+                    }, 500);
+                }, 1200);
+
+            } else {
+                // Return to original position nicely
+                theRing.classList.add('snapped');
+                theRing.style.transform = `translate(0px, 0px)`;
+                setTimeout(() => {
+                    theRing.classList.remove('snapped');
+                    theRing.classList.add('pulse');
+                }, 500);
+            }
+        }
+
+        theRing.addEventListener('mousedown', onDragStart);
+        window.addEventListener('mousemove', onDragMove, { passive: false });
+        window.addEventListener('mouseup', onDragEnd);
+
+        theRing.addEventListener('touchstart', onDragStart, { passive: false });
+        window.addEventListener('touchmove', onDragMove, { passive: false });
+        window.addEventListener('touchend', onDragEnd);
     }
 });
-
