@@ -143,6 +143,56 @@ body.locked {
     justify-content: center;
 }
 
+/* Login Screen */
+#login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-paper);
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease, visibility 1s;
+    background-image: radial-gradient(#d3cdc0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.login-content {
+    text-align: center;
+    z-index: 2;
+    padding: 50px 40px;
+    max-width: 500px;
+}
+
+.password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cute-input {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 2px solid #E6D4C1;
+    outline: none;
+    text-align: center;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.cute-input:focus {
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 10px rgba(255, 196, 196, 0.4);
+}
+
 /* Intro Screen */
 #intro-screen {
     position: fixed;
