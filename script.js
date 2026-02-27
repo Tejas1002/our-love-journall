@@ -1,4 +1,44 @@
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 0. Login Sequence ---
+    const loginScreen = document.getElementById('login-screen');
+    const loginBtn = document.getElementById('login-btn');
+    const secretPassword = document.getElementById('secret-password');
+    const loginError = document.getElementById('login-error');
+
+    // Acceptable cute passwords
+    const validPasswords = ['1330'];
+
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            const val = secretPassword.value.toLowerCase().trim();
+            if (validPasswords.includes(val)) {
+                // Success! Fade out login
+                loginScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loginScreen.style.visibility = 'hidden';
+                    loginScreen.style.display = 'none';
+                    // Little confetti pop on unlock
+                    confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 }, colors: ['#FFC4C4', '#ffffff', '#FF9B9B'] });
+                }, 1000);
+            } else {
+                // Shake and show error
+                secretPassword.classList.add('chosen-wrong');
+                loginError.classList.remove('hidden');
+                setTimeout(() => {
+                    secretPassword.classList.remove('chosen-wrong');
+                    loginError.classList.add('hidden');
+                }, 1500);
+            }
+        });
+
+        secretPassword.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+    }
+
     // --- 1. Audio & Preloader Sequence ---
     const startBtn = document.getElementById('start-btn');
     const bgMusic = document.getElementById('bg-music');
