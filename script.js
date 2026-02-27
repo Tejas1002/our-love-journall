@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginError = document.getElementById('login-error');
 
     // Acceptable cute passwords
-    const validPasswords = ['1330'];
+    const validPasswords = ['iloveyou', 'i love you', 'forever', 'cutie', 'always'];
 
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
@@ -371,3 +371,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
